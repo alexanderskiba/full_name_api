@@ -135,3 +135,7 @@ dmypy.json
 .pytype/
 
 # Cython debug symbols
+
+#CSV
+russian_names.csv
+russian_surnames.csv
