@@ -2,7 +2,7 @@ import csv
 from typing import List
 
 
-def read_names_to_list(file_name) -> list:
+def read_names_to_list(file_name) -> List[str]:
     """Функция для чтения и создания списка имен или фамилий"""
     with open(file_name, encoding='utf-8', newline='') as csvfile:
         all_name_list = list()
@@ -25,7 +25,7 @@ def validate_string(string: str) -> List[str]:
         return result
 
 
-def have_name(target_name_list: List[str], all_names_list: List[str]) -> bool:
+def have_name(target_name_list: List[str], all_names_list: List[str]) -> str:
     """Функция для выделения из списка имени, отчества и фамилии"""
     for item in target_name_list:
         if item in all_names_list:
@@ -35,4 +35,5 @@ def have_name(target_name_list: List[str], all_names_list: List[str]) -> bool:
 if __name__ == "__main__":
     # print(read_names_to_list("russian_names.csv"))
     # print(read_names_to_list('russian_surnames.csv'))
-    print(validate_string("Иванов        Иван     Иванович"))
+    # print(validate_string("Иванов        Иван     Иванович"))
+    print(have_name(["Иванов", "Иван", "Иванович"], read_names_to_list("russian_names.csv")))
