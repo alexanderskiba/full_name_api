@@ -12,16 +12,25 @@ def read_names_to_list(file_name) -> List[str]:
             all_name_list.append(row[0])
         return all_name_list
 
+def bad_string(string:str) -> bool:
+    special_characters = r"'!@#$%^&*()-+?_=<>/"
+    if any(character in special_characters for character in string):
+        return True
+    if any(map(str.isdigit, string)):
+        return True
 
 def validate_string(string: str) -> List[str]:
     """Функция для удаления всего лишнего"""
+    if bad_string(string):
+        return False
+
     if "," in string:
         new_str = string.split(",")
-        result = [word.strip() for word in new_str]
+        result = [word.strip().capitalize() for word in new_str if word and not word.isspace()]
         return result
     else:
         new_str = string.split(" ")
-        result = [item for item in new_str if item]
+        result = [item.capitalize() for item in new_str if item and not item.isspace()]
         return result
 
 
@@ -35,5 +44,4 @@ def have_name(target_name_list: List[str], all_names_list: List[str]) -> str:
 if __name__ == "__main__":
     # print(read_names_to_list("russian_names.csv"))
     # print(read_names_to_list('russian_surnames.csv'))
-    # print(validate_string("Иванов        Иван     Иванович"))
-    print(have_name(["Иванов", "Иван", "Иванович"], read_names_to_list("russian_names.csv")))
+    print(validate_string("Иван777, Иванович?,    Петров"))
