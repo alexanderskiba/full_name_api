@@ -12,13 +12,17 @@ app = Flask(__name__)
 def validate_full_name():
     data = request.json
     fullname_string = data["full_name"]
+    result_json = dict()
+    if not validate_string(fullname_string):
+        result_json["status"] = "error"
+        result_json["info"] = "bad string"
+        return result_json
     validated_string_list = validate_string(fullname_string)
     # print(validated_string_list)
     # Проверим имя и фамилию в списке
     flag_firstname = have_name(validated_string_list, first_name_list)
     flag_lastname = have_name(validated_string_list, last_name_list)
     flag_middlename = have_name(validated_string_list, middle_name_list)
-    result_json = dict()
     if flag_firstname:
         result_json["first_name"] = flag_firstname
     if flag_lastname:
