@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from werkzeug.exceptions import BadRequest
 
 from logic import read_names_to_list, validate_string, have_name
@@ -22,14 +22,9 @@ def validate_full_name():
     except KeyError:
         return {"status": "error", "info": "full_name key not found in JSON"}, 400
     result_json = dict()
-    # if not validate_string(fullname_string):
-    #     result_json["status"] = "error"
-    #     result_json["info"] = "bad string"
-    #     return result_json, 400
     try:
         validated_string_list = validate_string(fullname_string)
-        # print(validated_string_list)
-        # Проверим имя и фамилию в списке
+        # Проверим имя, фамилию и отчество в списке
         flag_firstname = have_name(validated_string_list, first_name_list)
         flag_lastname = have_name(validated_string_list, last_name_list)
         flag_middlename = have_name(validated_string_list, middle_name_list)
@@ -40,7 +35,7 @@ def validate_full_name():
         if flag_middlename:
             result_json["middlename"] = flag_middlename
         result_json["probability"] = 1.0
-        return json.dumps(result_json, ensure_ascii=False)
+        return jsonify(result_json)
     except BadRequestString:
         return {"status": "error", "info": "not valid string"}, 400
 
