@@ -1,6 +1,8 @@
 import csv
 from typing import List
 
+from errors import BadRequestString
+
 
 def read_names_to_list(file_name) -> List[str]:
     """Функция для чтения и создания списка имен или фамилий"""
@@ -22,7 +24,7 @@ def bad_string(string:str) -> bool:
 def validate_string(string: str) -> List[str]:
     """Функция для удаления всего лишнего"""
     if bad_string(string):
-        return False
+        raise BadRequestString
 
     if "," in string:
         new_str = string.split(",")
