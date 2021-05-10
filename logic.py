@@ -36,11 +36,13 @@ def validate_string(string: str) -> List[str]:
         return result
 
 
-def have_name(target_name_list: List[str], all_names_list: List[str]) -> str:
+def have_name(target_name_list: List[str], all_names_list: List[str]) -> List[str]:
     """Функция для выделения из списка имени, отчества и фамилии"""
+    item_list = []
     for item in target_name_list:
         if item in all_names_list:
-            return item
+            item_list.append(item)
+    return item_list
 
 
 if __name__ == "__main__":

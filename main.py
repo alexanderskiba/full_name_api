@@ -25,15 +25,20 @@ def validate_full_name():
     try:
         validated_string_list = validate_string(fullname_string)
         # Проверим имя, фамилию и отчество в списке
+        #todo Проверить приоритеты здесь
         flag_firstname = have_name(validated_string_list, first_name_list)
         flag_lastname = have_name(validated_string_list, last_name_list)
         flag_middlename = have_name(validated_string_list, middle_name_list)
         if flag_firstname:
-            result_json["first_name"] = flag_firstname
-        if flag_lastname:
-            result_json["lastname"] = flag_lastname
+            if flag_firstname[0] in flag_lastname:
+                flag_lastname.remove(flag_firstname[0])
+            result_json["first_name"] = flag_firstname[0]
         if flag_middlename:
-            result_json["middlename"] = flag_middlename
+            if flag_middlename[0] in flag_lastname:
+                flag_lastname.remove(flag_middlename[0])
+            result_json["middlename"] = flag_middlename[0]
+        if flag_lastname:
+            result_json["lastname"] = flag_lastname[0]
         result_json["probability"] = 1.0
         return jsonify(result_json)
     except BadRequestString:
