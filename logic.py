@@ -1,7 +1,7 @@
 import csv
 from typing import List
 
-from errors import BadRequestString
+from errors import BadRequestString, WrongLengthString
 
 
 def read_names_to_list(file_name) -> List[str]:
@@ -15,11 +15,20 @@ def read_names_to_list(file_name) -> List[str]:
         return all_name_list
 
 def bad_string(string:str) -> bool:
-    special_characters = r"'!@#$%^&*()-+?_=<>/"
+    special_characters = r"'!@#$%^&*()+?_=<>/"
     if any(character in special_characters for character in string):
         return True
     if any(map(str.isdigit, string)):
         return True
+
+def wrong_len_list(lst:List[str]) -> bool:
+    """Флаг на определение пустого спика или списка,
+    имеющего больше трех позиций"""
+    if len(lst) < 1:
+        return True
+    elif len(lst) > 3:
+        return True
+
 
 def validate_string(string: str) -> List[str]:
     """Функция для удаления всего лишнего"""
@@ -29,10 +38,14 @@ def validate_string(string: str) -> List[str]:
     if "," in string:
         new_str = string.split(",")
         result = [word.strip().capitalize() for word in new_str if word and not word.isspace()]
+        if wrong_len_list(result):
+            raise WrongLengthString
         return result
     else:
         new_str = string.split(" ")
         result = [item.capitalize() for item in new_str if item and not item.isspace()]
+        if wrong_len_list(result):
+            raise WrongLengthString
         return result
 
 

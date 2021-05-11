@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from werkzeug.exceptions import BadRequest
 
 from logic import read_names_to_list, validate_string, have_name
-from errors import BadRequestString
+from errors import BadRequestString, WrongLengthString
 
 first_name_list = read_names_to_list("russian_names.csv")
 last_name_list = read_names_to_list("russian_surnames.csv")
@@ -23,9 +23,11 @@ def validate_full_name():
         return {"status": "error", "info": "full_name key not found in JSON"}, 400
     result_json = dict()
     try:
-        validated_string_list = validate_string(fullname_string)
+        try:
+            validated_string_list = validate_string(fullname_string)
+        except WrongLengthString:
+            return {"status": "error", "info": "wrong length of input string"}, 400
         # Проверим имя, фамилию и отчество в списке
-        #todo Проверить приоритеты здесь
         flag_firstname = have_name(validated_string_list, first_name_list)
         flag_lastname = have_name(validated_string_list, last_name_list)
         flag_middlename = have_name(validated_string_list, middle_name_list)
