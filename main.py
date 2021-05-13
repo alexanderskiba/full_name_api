@@ -41,7 +41,11 @@ def validate_full_name():
             result_json["middlename"] = flag_middlename[0]
         if flag_lastname:
             result_json["lastname"] = flag_lastname[0]
-        result_json["probability"] = 1.0
+        if len(result_json) == 0:
+            result_json["probability"] = 0.0
+            result_json["info"] = "firstname, lastname, middlename were not found"
+        else:
+            result_json["probability"] = 1.0
         return jsonify(result_json)
     except BadRequestString:
         return {"status": "error", "info": "not valid string"}, 400
